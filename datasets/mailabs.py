@@ -1,3 +1,8 @@
+"""mailabs dataset is sampled at 16000 kHz with 0.5 seconds of silence
+    in the start and end of the audio data. Make sure to change the
+    sample_size hparams to match this.
+"""
+
 from concurrent.futures import ProcessPoolExecutor
 from functools import partial
 import numpy as np
@@ -5,11 +10,11 @@ import os
 from util import audio
 
 
-def build_from_path(in_dir, out_dir, books, hparams, num_workers=1, tqdm=lambda x: x):
+def build_from_path(in_dir, out_dir, books, num_workers=1, tqdm=lambda x: x):
   '''Preprocesses the mailabs Speech dataset from a given input path into a given output directory.
 
     Args:
-      in_dir: The directory where you have downloaded the LJ Speech dataset
+      in_dir: The directory where you have downloaded the mailabs Speech dataset
       out_dir: The directory to write the output into
       num_workers: Optional number of worker processes to parallelize across
       tqdm: You can optionally pass tqdm to get a nice progress bar
@@ -35,12 +40,12 @@ def build_from_path(in_dir, out_dir, books, hparams, num_workers=1, tqdm=lambda 
         text = parts[2]
         futures.append(
             executor.submit(partial(
-                _process_utterance, out_dir, name, wav_path, text, hparams)
+                _process_utterance, out_dir, name, wav_path, text)
             ))
   return [future.result() for future in tqdm(futures)]
 
 
-def _process_utterance(out_dir, name, wav_path, text, hparams):
+def _process_utterance(out_dir, name, wav_path, text):
   '''Preprocesses a single utterance audio/text pair.
 
   This writes the mel and linear scale spectrograms to disk and returns a tuple to write
@@ -57,17 +62,17 @@ def _process_utterance(out_dir, name, wav_path, text, hparams):
   '''
 
   # Load the audio to a numpy array:
-  wav = audio.load_wav(wav_path, hparams)
+  wav = audio.load_wav(wav_path)
 
   # trim silences here
-  wav = audio.trim_silence(wav, hparams)
+  wav = audio.trim_silence(wav)
 
   # Compute the linear-scale spectrogram from the wav:
-  spectrogram = audio.spectrogram(wav, hparams).astype(np.float32)
+  spectrogram = audio.spectrogram(wav).astype(np.float32)
   n_frames = spectrogram.shape[1]
 
   # Compute a mel-scale spectrogram from the wav:
-  mel_spectrogram = audio.melspectrogram(wav, hparams).astype(np.float32)
+  mel_spectrogram = audio.melspectrogram(wav).astype(np.float32)
 
   # Write the spectrograms to disk:
   spectrogram_filename = 'mailabs-spec-{}.npy'.format(name)

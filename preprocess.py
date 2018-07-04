@@ -3,7 +3,7 @@ import os
 from multiprocessing import cpu_count
 from tqdm import tqdm
 from datasets import amy, blizzard, ljspeech, kusal, mailabs
-from hparams import hparams
+from hparams import hparams, hparams_debug_string
 
 
 def preprocess_blizzard(args):
@@ -47,11 +47,11 @@ def preprocess_mailabs(args):
   os.makedirs(out_dir, exist_ok=True)
   books = args.books
   metadata = mailabs.build_from_path(
-      in_dir, out_dir, books, args.hparams, args.num_workers, tqdm)
-  write_metadata(metadata, out_dir, args.hparams)
+      in_dir, out_dir, books, args.num_workers, tqdm)
+  write_metadata(metadata, out_dir)
 
 
-def write_metadata(metadata, out_dir, hparams=hparams):
+def write_metadata(metadata, out_dir):
   with open(os.path.join(out_dir, 'train.txt'), 'w', encoding='utf-8') as f:
     for m in metadata:
       f.write('|'.join([str(x) for x in m]) + '\n')
@@ -76,9 +76,6 @@ def main():
       '--books',
       help='comma-seperated and no space name of books i.e hunter_space,pink_fairy_book,etc.',
   )
-  parser.add_argument(
-      '--hparams', default='',
-      help='Hyperparameter overrides as a comma-separated list of name=value pairs')
   parser.add_argument('--num_workers', type=int, default=cpu_count())
   args = parser.parse_args()
 
@@ -89,7 +86,7 @@ def main():
     parser.error(
         "--mailabs_books_dir required if mailabs is chosen for dataset.")
 
-  args.hparams = hparams.parse(args.hparams)
+  print(hparams_debug_string())
 
   if args.dataset == 'amy':
     preprocess_amy(args)

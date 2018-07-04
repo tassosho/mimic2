@@ -101,4 +101,4 @@ if __name__ == '__main__':
     hparams.parse(args.hparams)
     print(hparams_debug_string())
     synthesizer.load(args.checkpoint)
-    app.run(host='0.0.0.0', port=3000)
+    app.run(host='0.0.0.0', port=args.port)

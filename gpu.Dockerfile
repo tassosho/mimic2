@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:1.5.0-gpu
+FROM tensorflow/tensorflow:1.8.0-gpu-py3
 
 RUN mkdir /root/mimic2
 COPY . /root/mimic2

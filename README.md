@@ -24,9 +24,19 @@ Pull requests are welcome!
 #### using docker
 1. make sure you have docker installed
 
-2. Build Docker (If you want to use the GPU in docker make sure you have [nvidia-docker](https://github.com/NVIDIA/nvidia-docker) installed)
-   1. `docker build -t mycroft/mimic2:gpu -f gpu.Dockerfile .` (switch all gpu for cpu if you want cpu version)
-   2. `nvidia-docker run -it -p 3000:3000 mycroft/mimic2:gpu` (switch gpu for cpu if you want cpu version) 
+1. Build Docker
+   
+   the Dockerfile comes with a gpu option or cpu option. If you want to use the GPU in docker make sure you have [nvidia-docker](https://github.com/NVIDIA/nvidia-docker) installed
+
+   gpu: `docker build -t mycroft/mimic2:gpu -f gpu.Dockerfile .`
+   
+   cpu: `docker build -t mycroft/mimic2:gpu -f cpu.Dockerfile .`
+
+2. Run Docker
+
+   gpu: `nvidia-docker run -it -p 3000:3000 mycroft/mimic2:gpu`
+   
+   cpu: `docker run -it -p 3000:3000 mycroft/mimic2:cpu`
 
 #### manually
 1. Install Python 3.

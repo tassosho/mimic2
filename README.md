@@ -33,6 +33,7 @@ Pull requests are welcome!
 
 
 ### Using a pre-trained model
+   **NOTE** this model will only work if you switch out the LocationSensitiveAttention layer for the BahdanauAttention layer in tacotron.py
 
 1. **Download and unpack a model**:
    ```

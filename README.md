@@ -21,7 +21,7 @@ Pull requests are welcome!
 
 ### Installing dependencies
 
-#### using docker
+#### using docker (recommended)
 1. make sure you have docker installed
 
 1. Build Docker

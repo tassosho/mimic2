@@ -21,6 +21,14 @@ Pull requests are welcome!
 
 ### Installing dependencies
 
+#### using docker
+1. make sure you have docker installed
+
+2. Build Docker (If you want to use the GPU in docker make sure you have [nvidia-docker](https://github.com/NVIDIA/nvidia-docker) installed)
+   1. `docker build -t mycroft/mimic2-demoserver:gpu -f gpu.Dockerfile .` (switch all gpu for cpu if you want cpu version)
+   2. `nvidia-docker run -it -p 3000:3000 mycroft/mimic2-demoserver:gpu` (switch gpu for cpu if you want cpu version) 
+
+#### manually
 1. Install Python 3.
 
 2. Install the latest version of [TensorFlow](https://www.tensorflow.org/install/) for your platform. For better

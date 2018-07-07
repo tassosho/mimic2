@@ -4,17 +4,15 @@ This is a fork of [keithito/tacotron](https://github.com/keithito/tacotron)
 with changes specific to Mimic 2 applied.
 
 
-
 ## Background
 
-Earlier this year, Google published a paper, [Tacotron: A Fully End-to-End Text-To-Speech Synthesis Model](https://arxiv.org/pdf/1703.10135.pdf),
+Google published a paper, [Tacotron: A Fully End-to-End Text-To-Speech Synthesis Model](https://arxiv.org/pdf/1703.10135.pdf),
 where they present a neural text-to-speech model that learns to synthesize speech directly from
 (text, audio) pairs. However, they didn't release their source code or training data. This is an
 attempt to provide an open-source implementation of the model described in their paper.
 
 The quality isn't as good as Google's demo yet, but hopefully it will get there someday :-).
 Pull requests are welcome!
-
 
 
 ## Quick Start
@@ -51,7 +49,7 @@ Pull requests are welcome!
 
 
 ### Using a pre-trained model
-   **NOTE** this model will only work if you switch out the LocationSensitiveAttention layer for the BahdanauAttention layer in tacotron.py
+   **NOTE this model will only work if you switch out the LocationSensitiveAttention layer for the BahdanauAttention layer in tacotron.py
 
 1. **Download and unpack a model**:
    ```
@@ -63,7 +61,7 @@ Pull requests are welcome!
    python3 demo_server.py --checkpoint /tmp/tacotron-20170720/model.ckpt
    ```
 
-3. **Point your browser at localhost:9000**
+3. **Point your browser at localhost:3000**
    * Type what you want to synthesize
 
 
@@ -77,7 +75,7 @@ Pull requests are welcome!
    The following are supported out of the box:
     * [LJ Speech](https://keithito.com/LJ-Speech-Dataset/) (Public Domain)
     * [Blizzard 2012](http://www.cstr.ed.ac.uk/projects/blizzard/2012/phase_one) (Creative Commons Attribution Share-Alike)
-
+    * [M-ailabs](http://www.m-ailabs.bayern/en/the-mailabs-speech-dataset/)
    You can use other datasets if you convert them to the right format. See [TRAINING_DATA.md](TRAINING_DATA.md) for more info.
 
 
@@ -104,12 +102,15 @@ Pull requests are welcome!
              |- lab
              |- wav
    ```
+   
+   For M-AILABS follow the directory structure from [here](http://www.m-ailabs.bayern/en/the-mailabs-speech-dataset/)
 
 3. **Preprocess the data**
    ```
    python3 preprocess.py --dataset ljspeech
    ```
-     * Use `--dataset blizzard` for Blizzard data
+     * other datasets can be used i.e. `--dataset blizzard` for Blizzard data
+     * for the mailabs dataset, do `preprocess.py --help` for options. Also note that mailabs uses sample_size of 16000
 
 4. **Train a model**
    ```

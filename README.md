@@ -76,6 +76,7 @@ Pull requests are welcome!
     * [LJ Speech](https://keithito.com/LJ-Speech-Dataset/) (Public Domain)
     * [Blizzard 2012](http://www.cstr.ed.ac.uk/projects/blizzard/2012/phase_one) (Creative Commons Attribution Share-Alike)
     * [M-ailabs](http://www.m-ailabs.bayern/en/the-mailabs-speech-dataset/)
+
    You can use other datasets if you convert them to the right format. See [TRAINING_DATA.md](TRAINING_DATA.md) for more info.
 
 

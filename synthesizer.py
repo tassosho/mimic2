@@ -31,7 +31,7 @@ class Synthesizer:
     saver = tf.train.Saver()
     saver.restore(self.session, checkpoint_path)
 
-  def synthesize(self, text):
+  def synthesize(self, text, return_wav=False):
     cleaner_names = [x.strip() for x in hparams.cleaners.split(',')]
     seq = text_to_sequence(text, cleaner_names)
     feed_dict = {
@@ -51,6 +51,9 @@ class Synthesizer:
     wav = wav[:audio_endpoint]
     alignment = alignment[:, :alignment_endpoint]
 
+    if return_wav:
+      return wav, alignment
+
     out = io.BytesIO()
     audio.save_wav(wav, out)
-    return out.getvalue(), alignment
+    return out, alignment

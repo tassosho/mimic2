@@ -27,7 +27,7 @@ if __name__ == "__main__":
     )
 
     wav_output = tf.saved_model.utils.build_tensor_info(synth.wav_output)
-    alignment = tf.saved_model.utils.build_tensor_info(synth.alignment)
+    # alignment = tf.saved_model.utils.build_tensor_info(synth.alignment)
 
     prediction_signature = (
         tf.saved_model.signature_def_utils.build_signature_def(
@@ -36,8 +36,8 @@ if __name__ == "__main__":
                 "input_lengths": input_lengths
             },
             outputs={
-                'wav_output': wav_output,
-                'alignment': alignment
+                'wav_output': wav_output #,
+                # 'alignment': alignment
             },
             method_name=tf.saved_model.signature_constants.PREDICT_METHOD_NAME)
     )

@@ -3,12 +3,18 @@ from flask.views import MethodView
 from hparams import hparams, hparams_debug_string
 import argparse
 import os
+from util import audio
 from synthesizer import Synthesizer
 from flask_cors import CORS
 import io
+import numpy as np
+import math
+from synthesize_helper import synthesize_helper
 
 app = Flask(__name__)
 CORS(app)
+
+use_synthesize_helper = False
 
 html_body = '''<html><title>Demo</title>
 <style>
@@ -63,14 +69,18 @@ function synthesize(text) {
 
 synthesizer = Synthesizer()
 
-
 class Mimic2(MethodView):
     def get(self):
         text = request.args.get('text')
         if text:
-            wav, _ = synthesizer.synthesize(text)
-            audio = io.BytesIO(wav)
-            return send_file(audio, mimetype="audio/wav")
+            if use_synthesize_helper:
+              wav = synthesize_helper(text, synthesizer)
+              # wav, _ = synthesizer.synthesize(text)
+              audio = io.BytesIO(wav)
+              return send_file(audio, mimetype="audio/wav")
+            else:
+              wav, _ = synthesizer.synthesize(text)
+              return send_file(wav, mimetype="audio/wav")
 
 
 class UI(MethodView):
@@ -95,7 +105,14 @@ if __name__ == '__main__':
     parser.add_argument(
         '--gpu_assignment', default='0',
         help='Set the gpu the model should run on')
+    parser.add_argument(
+      '--synthezier_helper', default=False, action="store_false",
+      help='uses the synthesize helper during sythesis'
+    )
     args = parser.parse_args()
+
+    use_synthesize_helper = args.synthezier_helper
+
     os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu_assignment
     os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
     hparams.parse(args.hparams)

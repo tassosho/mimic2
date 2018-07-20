@@ -26,8 +26,12 @@ if __name__ == "__main__":
         synth.model.input_lengths
     )
 
-    wav_output = tf.saved_model.utils.build_tensor_info(synth.wav_output)
-    # alignment = tf.saved_model.utils.build_tensor_info(synth.alignment)
+    w_o = audio.inv_spectrogram_tensorflow(
+        synth.model.linear_outputs
+    )
+
+    wav_output = tf.saved_model.utils.build_tensor_info(w_o)
+    alignment = tf.saved_model.utils.build_tensor_info(synth.model.alignments)
 
     prediction_signature = (
         tf.saved_model.signature_def_utils.build_signature_def(
@@ -36,8 +40,8 @@ if __name__ == "__main__":
                 "input_lengths": input_lengths
             },
             outputs={
-                'wav_output': wav_output #,
-                # 'alignment': alignment
+                'wav_output': wav_output,
+                'alignment': alignment
             },
             method_name=tf.saved_model.signature_constants.PREDICT_METHOD_NAME)
     )

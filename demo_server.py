@@ -9,7 +9,7 @@ from flask_cors import CORS
 import io
 import numpy as np
 import math
-from synthesize_helper import synthesize_helper
+from synthesize_helper import synthesize_helper, replace_acronym, custom_splitter
 
 app = Flask(__name__)
 CORS(app)
@@ -72,6 +72,7 @@ synthesizer = Synthesizer()
 class Mimic2(MethodView):
     def get(self):
         text = request.args.get('text')
+        text =  " ".join(replace_acronym(custom_splitter(text)))
         if text:
             if use_synthesize_helper:
               wav = synthesize_helper(text, synthesizer)

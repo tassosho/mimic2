@@ -40,6 +40,8 @@ letter_lookup = {
 
 def replace_acronym(text):
   for idx, word in enumerate(text):
+    if "{" in word and "}" in word:
+      continue
     if len(word) == 1:
       continue
     if word.isupper():
@@ -49,6 +51,19 @@ def replace_acronym(text):
           sound += letter_lookup.get(letter) + " "
       text[idx] = sound
   return text
+
+def custom_splitter(text):
+  if "{" in text and "}" in text:
+    acc = []
+    split = text.split("}")
+    for word in split:
+      if "{" in word:
+        acc.append(word + "}")
+      else:
+        acc.append(word)
+    return acc
+  else:
+    return text.split()
 
 def add_punctuation(text):
   if len(text) < 1:

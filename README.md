@@ -40,31 +40,12 @@ Pull requests are welcome!
 1. Install Python 3.
 
 2. Install the latest version of [TensorFlow](https://www.tensorflow.org/install/) for your platform. For better
-   performance, install with GPU support if it's available. This code works with TensorFlow 1.3 or 1.4.
+   performance, install with GPU support if it's available. This code has been tested on tensorflow 1.8.
 
 3. Install requirements:
    ```
    pip install -r requirements.txt
    ```
-
-
-### Using a pre-trained model
-   **NOTE this model will only work if you switch out the LocationSensitiveAttention layer for the BahdanauAttention layer in tacotron.py
-
-1. **Download and unpack a model**:
-   ```
-   curl http://data.keithito.com/data/speech/tacotron-20170720.tar.bz2 | tar xjC /tmp
-   ```
-
-2. **Run the demo server**:
-   ```
-   python3 demo_server.py --checkpoint /tmp/tacotron-20170720/model.ckpt
-   ```
-
-3. **Point your browser at localhost:3000**
-   * Type what you want to synthesize
-
-
 
 ### Training
 
@@ -120,7 +101,9 @@ Pull requests are welcome!
 
    Tunable hyperparameters are found in [hparams.py](hparams.py). You can adjust these at the command
    line using the `--hparams` flag, for example `--hparams="batch_size=16,outputs_per_step=2"`.
-   Hyperparameters should generally be set to the same values at both training and eval time.
+   Hyperparameters should generally be set to the same values at both training and eval time. I highly recommend
+   setting the params in the hparams.py file to gurantee consistentcy during preprocessing, training, evaluating,
+   and running the demo server.
 
 
 5. **Monitor with Tensorboard** (optional)
@@ -136,7 +119,7 @@ Pull requests are welcome!
    python3 demo_server.py --checkpoint ~/tacotron/logs-tacotron/model.ckpt-185000
    ```
    Replace "185000" with the checkpoint number that you want to use, then open a browser
-   to `localhost:9000` and type what you want to speak. Alternately, you can
+   to `localhost:3000` and type what you want to speak. Alternately, you can
    run [eval.py](eval.py) at the command line:
    ```
    python3 eval.py --checkpoint ~/tacotron/logs-tacotron/model.ckpt-185000

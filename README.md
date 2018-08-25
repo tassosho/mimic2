@@ -28,7 +28,7 @@ Pull requests are welcome!
 
    gpu: `docker build -t mycroft/mimic2:gpu -f gpu.Dockerfile .`
    
-   cpu: `docker build -t mycroft/mimic2:gpu -f cpu.Dockerfile .`
+   cpu: `docker build -t mycroft/mimic2:cpu -f cpu.Dockerfile .`
 
 2. Run Docker
 

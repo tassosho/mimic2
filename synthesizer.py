@@ -56,4 +56,4 @@ class Synthesizer:
 
     out = io.BytesIO()
     audio.save_wav(wav, out)
-    return out, alignment
+    return out.getvalue(), alignment

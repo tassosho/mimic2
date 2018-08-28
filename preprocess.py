@@ -61,6 +61,17 @@ def write_metadata(metadata, out_dir):
         (len(metadata), frames, hours))
   print('Max input length:  %d' % max(len(m[3]) for m in metadata))
   print('Max output length: %d' % max(m[2] for m in metadata))
+  with open("metadata.txt", 'w') as f:
+    f.write(
+        '''
+          Wrote {} utterances, {} frames, {} hours\n
+          Max input lengh: {} \n
+          Max output length: {} \n
+        '''.format(
+            len(metadata), frames, hours,
+            max(len(m[3]) for m in metadata), max(m[2] for m in metadata)
+        )
+    )
 
 
 def main():

@@ -19,11 +19,12 @@ sentences = [
     'Talib Kweli confirmed to AllHipHop that he will be releasing an album in the next year.',
     # From mycroft
     "It took me quite a long time to develop a voice, and now that I have it I'm not going to be silent.",
+    "As commander-in-chief of the Continental Army during the American Revolutionary War, he was the principal force in the surrender of the British at Yorktown",
     "Be a voice, not an echo.",
     "The human voice is the most perfect instrument of all.",
     "I'm sorry Dave, I'm afraid I can't do that.",
     "This cake is great, It's so delicious and moist.",
-    "hello my name is mycroft.",
+    "hello, my name is mycroft.",
     "hi.",
     "wow.",
     "cool.",

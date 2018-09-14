@@ -189,6 +189,7 @@ Contributions are accepted! We'd love the communities help in building a better 
 ## Other Implementations
   * By Alex Barron: https://github.com/barronalex/Tacotron
   * By Kyubyong Park: https://github.com/Kyubyong/tacotron
+  * By Keith Ito (the original): https://github.com/keithito/tacotron
 
 ## Visualizing Your Data
 [analyze.py](analyze.py) is a tool to visualize your dataset after preprocessing. This step is important to ensure quality in the voice generation. The analyze tool takes in train.txt as the data input to do visualizations. `train.txt` is a file created from `preprocess.py`.

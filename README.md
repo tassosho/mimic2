@@ -1,7 +1,7 @@
 # mimic2
 
 This is a fork of [keithito/tacotron](https://github.com/keithito/tacotron)
-with changes specific to Mimic 2 applied. This repo is actively developed on by the Mycroft AI team and community.
+with tooling and code enhancements. This repo is actively developed on by the Mycroft AI team and community.
 
 
 ## Background

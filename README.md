@@ -11,7 +11,7 @@ where they present a neural text-to-speech model that learns to synthesize speec
 (text, audio) pairs. However, they didn't release their source code or training data. This is an
 attempt to provide an open-source implementation of the model described in their paper.
 
-The quality isn't as good as Google's demo yet, but hopefully it will get there someday :-).
+The quality isn't as good as Google's demo yet, but hopefully, it will get there someday :-).
 Pull requests are welcome!
 
 
@@ -20,11 +20,11 @@ Pull requests are welcome!
 ### Installing dependencies
 
 #### using docker (recommended)
-1. make sure you have docker installed
+1. make sure you have Docker installed
 
 1. Build Docker
    
-   the Dockerfile comes with a gpu option or cpu option. If you want to use the GPU in docker make sure you have [nvidia-docker](https://github.com/NVIDIA/nvidia-docker) installed
+   The Dockerfile comes with a GPU option or CPU option. If you want to use the GPU in docker make sure you have [nvidia-docker](https://github.com/NVIDIA/nvidia-docker) installed
 
    gpu: `docker build -t mycroft/mimic2:gpu -f gpu.Dockerfile .`
    
@@ -40,7 +40,7 @@ Pull requests are welcome!
 1. Install Python 3.
 
 2. Install the latest version of [TensorFlow](https://www.tensorflow.org/install/) for your platform. For better
-   performance, install with GPU support if it's available. This code has been tested on tensorflow 1.8.
+   Performance, install with GPU support if it's available. This code has been tested on tensorflow 1.8.
 
 3. Install requirements:
    ```
@@ -71,7 +71,7 @@ Pull requests are welcome!
          |- wavs
    ```
 
-   or like this for Blizzard 2012:
+   alternatively, like this for Blizzard 2012:
    ```
    tacotron
      |- Blizzard2012
@@ -91,12 +91,12 @@ Pull requests are welcome!
    ```
    python3 preprocess.py --dataset ljspeech
    ```
-     * other datasets can be used i.e. `--dataset blizzard` for Blizzard data
-     * for the mailabs dataset, do `preprocess.py --help` for options. Also note that mailabs uses sample_size of 16000
+     * other datasets can be used, i.e. `--dataset blizzard` for Blizzard data
+     * for the mailabs dataset, do `preprocess.py --help` for options. Also, note that mailabs uses sample_size of 16000
      * you may want to create your own preprocessing script that works for your dataset. You can follow examples from preprocess.py and ./datasets
 
 
-    preprocess.py creates a train.txt and metadata.txt. train.txt is the file you use to pass to train.py input parameter. metadata.txt can be used as a reference to get max input lengh, max output lengh, and how many hours is your dataset.
+    preprocess.py creates a train.txt and metadata.txt. train.txt is the file you use to pass to the train.py input parameter. metadata.txt can be used as a reference to get max input length, max output length, and how many hours is your dataset.
   
     **NOTE**
     modify hparams.py to cater to your dataset.
@@ -108,8 +108,7 @@ Pull requests are welcome!
 
    Tunable hyperparameters are found in [hparams.py](hparams.py). You can adjust these at the command
    line using the `--hparams` flag, for example `--hparams="batch_size=16,outputs_per_step=2"`.
-   Hyperparameters should generally be set to the same values at both training and eval time. **I highly recommend
-   setting the params in the hparams.py file to guarantee consistency during preprocessing, training, evaluating,
+   Hyperparameters should generally be set to the same values at both training and eval time. **I highly recommend setting the params in the hparams.py file to guarantee consistency during preprocessing, training, evaluating,
    and running the demo server. The --hparams flag will be deprecated soon**
 
 
@@ -141,7 +140,7 @@ Pull requests are welcome!
 ## Notes and Common Issues
 
   * [TCMalloc](http://goog-perftools.sourceforge.net/doc/tcmalloc.html) seems to improve
-    training speed and avoids occasional slowdowns seen with the default allocator. You
+    Training speed and avoids occasional slowdowns seen with the default allocator. You
     can enable it by installing it and setting `LD_PRELOAD=/usr/lib/libtcmalloc.so`. With TCMalloc,
     you can get around 1.1 sec/step on a GTX 1080Ti.
 
@@ -153,10 +152,10 @@ Pull requests are welcome!
   * If you pass a Slack incoming webhook URL as the `--slack_url` flag to train.py, it will send
     you progress updates every 1000 steps.
 
-  * Occasionally, you may see a spike in loss and the model will forget how to attend (the
-    alignments will no longer make sense). Although it will recover eventually, it may
-    save time to restart at a checkpoint prior to the spike by passing the
-    `--restore_step=150000` flag to train.py (replacing 150000 with a step number prior to the
+  * Occasionally, you may see a spike in the loss, and the model will forget how to attend (the
+    Alignments will no longer make sense). Although it will recover eventually, it may
+    save time to restart at a checkpoint before the spike by passing the
+    `--restore_step=150000` flag to train.py (replacing 150000 with a step number before the
     spike). **Update**: a recent [fix](https://github.com/keithito/tacotron/pull/7) to gradient
     clipping by @candlewill may have fixed this.
     
@@ -185,7 +184,7 @@ Example
     python analyze.py --train_file_path=~/tacotron/training/train.txt --save_to=~tacotron/visuals --cmu_dict_path=~/cmudict-0.7b
 ```
 
-cmu_dict_path is optional if you'd like to visualize the distribution of the phonenemes.
+cmu_dict_path is optional if you'd like to visualize the distribution of the phonemes.
 
 Analyze outputs 6 different plots.
 
@@ -194,32 +193,32 @@ Analyze outputs 6 different plots.
 
 This tells you what your audio data looks like in the time perspective. This plot shows the average seconds of your audio sample per character length of the sample.
 
-E.g So for all 50 character samples the average audio length is 3 seconds. Your data should show a linear pattern like the example above. 
+E.g. So for all 50 character samples, the average audio length is 3 seconds. Your data should show a linear pattern like the example above. 
 
-Having a linear pattern for time vs character lengths is important to ensure a consistent speech rate during audio generation.
+Having a linear pattern for time vs. character lengths is vital to ensure a consistent speech rate during audio generation.
 
-Below is a bad example of average seconds vs character lengths in your dataset. You can see taht there is inconsistency towards the higher character lengths range. at 180, the average audio length was 8 seconds while at 185 the averate was 6.
+Below is a bad example of average seconds vs. character lengths in your dataset. You can see that there is an inconsistency towards the higher character lengths range. At 180, the average audio length was 8 seconds while at 185 the average was 6.
 
 ![badavgsec](example_visuals/bad_avgsec.png)
 
 ### Median Seconds vs Character Lengths
 ![medsecvslen](example_visuals/medesecvscharlen.png)
 
-Another perspective for time, that plots the median.
+Another perspective for the time that plots the median.
 
 ### Mode Seconds vs Character Lengths
 ![modesecvslen](example_visuals/modsecvscharlen.png)
 
-Another perspective for time, that plots the mode.
+Another perspective for the time that plots the mode.
 
 ### Standard Deviation vs Character Lengths
 ![stdvslen](example_visuals/stdvscharlen.png)
 
-Plots the standard deviation or spread of your dataset. The standard deviation should stay in a range no bigger then 0.8.
+Plots the standard deviation or spread of your dataset. The standard deviation should stay in a range no larger than 0.8.
 
-E.g For samples with 100 character lengths, the average audio length is 6 seconds. According to the chart above, 100 character lenghs has an std of about 0.6. That means most samples in the 100 character length range should be no more then 6.6 seconds and no less then 5.2 seconds.
+E.g. For samples with 100 character lengths, the average audio length is 6 seconds. According to the chart above, 100 character lengths have an std of about 0.6. That means most samples in the 100 character length range should be no more than 6.6 seconds and no less than 5.2 seconds.
 
-Having a low standard deviation is important to ensure a consistent speech rate during audio generation.
+Having a low standard deviation is vital to ensure a consistent speech rate during audio generation.
 
 Below is an example of a bad distribution of standard deviations.
 
@@ -228,17 +227,17 @@ Below is an example of a bad distribution of standard deviations.
 ### Number of Samples vs Character Lengths
 ![numvslen](example_visuals/numsamplesvscharlen.png)
 
-Plots the number of samples you have in the character lengths range.
+Plots the number of samples you have in character lengths range.
 
 E.g. For samples in the 100 character lengths range, there are about 125 samples of it.
 
 It's important to keep this plot as normally distributed as possible so that the model has enough data to produce a natural speech rate. If this char is off balance, you may get weird speech rate during voice generation.
 
-Below is an example of a bad distribution for number of samples. This distribution will generate sequences in the 25 - 100 character lengths really well, but anything pass that will have bad quality. In this example you may experience a speech up in speech rate as the model try to squish 150 characters in 3 seconds.
+Below is an example of a lousy distribution for the number of samples. This distribution will generate sequences in the 25 - 100 character lengths well, but anything past that will have bad quality. In this example, you may experience a speech up in speech rate as the model try to squish 150 characters in 3 seconds.
 
 ![badnumsamp](example_visuals/bad_num_samples.png)
 
 ### Phonemes Distribution
 ![phonemedist](example_visuals/phonemedist.png)
 
-This only output if you use the `--cmu_dict_path` parameter. The X axis are the unique phonemes and the Y axis shows how many times that phoneme shows up in your dataset. We are still experimenting with how the distribution should look, but the theory is having a balanced distribution of phonemes will increase quality in pronounciation.
+This only output if you use the `--cmu_dict_path` parameter. The X-axis is the unique phonemes, and the Y-axis shows how many times that phoneme shows up in your dataset. We are still experimenting with how the distribution should look, but the theory is having a balanced distribution of phonemes will increase quality in pronunciation.

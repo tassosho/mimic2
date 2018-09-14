@@ -15,6 +15,9 @@ The quality isn't as good as Google's demo yet, but hopefully, it will get there
 Pull requests are welcome!
 
 
+## Contributions
+Contributions are accepted! We'd love the communities help in building a better speech synthesis engine; weather it be code, or, update on the README, bug reports, etc. For real time conversations, join our [mattermost](https://chat.mycroft.ai/community/channels/machine-learning) chat and enter the machinelearning channel.
+
 ## Quick Start
 
 ### Installing dependencies

@@ -233,7 +233,7 @@ E.g. For samples in the 100 character lengths range, there are about 125 samples
 
 It's important to keep this plot as normally distributed as possible so that the model has enough data to produce a natural speech rate. If this char is off balance, you may get weird speech rate during voice generation.
 
-Below is an example of a lousy distribution for the number of samples. This distribution will generate sequences in the 25 - 100 character lengths well, but anything past that will have bad quality. In this example, you may experience a speech up in speech rate as the model try to squish 150 characters in 3 seconds.
+Below is an example of a lousy distribution for the number of samples. This distribution will generate sequences in the 25 - 100 character lengths well, but anything past that will have bad quality. In this example, you may experience a speed up in speech rate as the model try to squish 150 characters in 3 seconds.
 
 ![badnumsamp](example_visuals/bad_num_samples.png)
 

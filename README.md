@@ -190,7 +190,7 @@ cmu_dict_path is optional if you'd like to visualize the distribution of the pho
 Analyze outputs 6 different plots.
 
 ### Average Seconds vs Character Lengths
-![avgsecvslen](analyze/example_visuals/avgsecvscharlen.png)
+![avgsecvslen](example_visuals/avgsecvscharlen.png)
 
 This tells you what your audio data looks like in the time perspective. This plot shows the average seconds of your audio sample per character length of the sample.
 

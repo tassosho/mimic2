@@ -114,6 +114,7 @@ Contributions are accepted! We'd love the communities help in building a better 
    Hyperparameters should generally be set to the same values at both training and eval time. **I highly recommend setting the params in the hparams.py file to guarantee consistency during preprocessing, training, evaluating,
    and running the demo server. The --hparams flag will be deprecated soon**
 
+   During training, the script will save the models progress every 1000 steps. You can monitor the progress using tensorboard and also listening to the output of the model. You can find the wav file and alignment chart in a format of step-*. See below for an example of what an alignment should look like.
 
 5. **Monitor with Tensorboard** (optional)
    ```
@@ -124,16 +125,23 @@ Contributions are accepted! We'd love the communities help in building a better 
    `~/tacotron/logs-tacotron`.
 
 6. **Synthesize from a checkpoint**
+  
    ```
    python3 demo_server.py --checkpoint ~/tacotron/logs-tacotron/model.ckpt-185000
    ```
    Replace "185000" with the checkpoint number that you want to use, then open a browser
    to `localhost:3000` and type what you want to speak. Alternately, you can
    run [eval.py](eval.py) at the command line:
+  
    ```
    python3 eval.py --checkpoint ~/tacotron/logs-tacotron/model.ckpt-185000
    ```
    If you set the `--hparams` flag when training, set the same value here.
+
+   [eval.py](eval.py) will output sampels define in the sentence list found [here](eval.py). You may modify to your use case.
+   eval.py will also output two things, the wavfile, and alignment chart. To have a good alignment, the alignment chart should generally be linear. Below is a good example of a model that output a good alignment for a sample.
+
+   ![alchart](example_visuals/alignment_eval.png)
 
 7. **Analyzing Data**
    
@@ -180,7 +188,7 @@ Contributions are accepted! We'd love the communities help in building a better 
   * By Kyubyong Park: https://github.com/Kyubyong/tacotron
 
 ## Visualizing Your Data
-[analyze](analyze.py) is a tool to visualize your dataset after preprocessing. This step is important to ensure quality in the voice generation. The analyze tool takes in train.txt as the data input to do visualizations. train.txt is a file created from preprocess.py.
+[analyze.py](analyze.py) is a tool to visualize your dataset after preprocessing. This step is important to ensure quality in the voice generation. The analyze tool takes in train.txt as the data input to do visualizations. `train.txt` is a file created from `preprocess.py`.
 
 Example
 ```
@@ -189,14 +197,14 @@ Example
 
 cmu_dict_path is optional if you'd like to visualize the distribution of the phonemes.
 
-Analyze outputs 6 different plots.
+analyze.py outputs 6 different plots.
 
 ### Average Seconds vs Character Lengths
 ![avgsecvslen](example_visuals/avgsecvscharlen.png)
 
 This tells you what your audio data looks like in the time perspective. This plot shows the average seconds of your audio sample per character length of the sample.
 
-E.g. So for all 50 character samples, the average audio length is 3 seconds. Your data should show a linear pattern like the example above. 
+E.g. So for all 50 character samples, the average audio length is 3 seconds. Your data should show a linear pattern like the example above.
 
 Having a linear pattern for time vs. character lengths is vital to ensure a consistent speech rate during audio generation.
 
@@ -236,7 +244,7 @@ E.g. For samples in the 100 character lengths range, there are about 125 samples
 
 It's important to keep this plot as normally distributed as possible so that the model has enough data to produce a natural speech rate. If this char is off balance, you may get weird speech rate during voice generation.
 
-Below is an example of a lousy distribution for the number of samples. This distribution will generate sequences in the 25 - 100 character lengths well, but anything past that will have bad quality. In this example, you may experience a speed up in speech rate as the model try to squish 150 characters in 3 seconds.
+Below is an example of a bad distribution for the number of samples. This distribution will generate sequences in the 25 - 100 character lengths well, but anything past that will have bad quality. In this example, you may experience a speed up in speech rate as the model try to squish 150 characters in 3 seconds.
 
 ![badnumsamp](example_visuals/bad_num_samples.png)
 

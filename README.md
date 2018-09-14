@@ -206,7 +206,7 @@ analyze.py outputs 6 different plots.
 ### Average Seconds vs Character Lengths
 ![avgsecvslen](example_visuals/avgsecvscharlen.png)
 
-This tells you what your audio data looks like in the time perspective. This plot shows the average seconds of your audio sample per character length of the sample.
+This plot shows the average seconds of your audio sample per character length of the sample. This tells you what your audio data looks like in the time perspective. 
 
 E.g. So for all 50 character samples, the average audio length is 3 seconds. Your data should show a linear pattern like the example above.
 
@@ -246,7 +246,7 @@ Plots the number of samples you have in character lengths range.
 
 E.g. For samples in the 100 character lengths range, there are about 125 samples of it.
 
-It's important to keep this plot as normally distributed as possible so that the model has enough data to produce a natural speech rate. If this char is off balance, you may get weird speech rate during voice generation.
+It's important to keep this plot as normally distributed as possible so that the model has enough data to produce a natural speech rate. If the chart look's off balance, you may get weird speech rate during voice generation.
 
 Below is an example of a bad distribution for the number of samples. This distribution will generate sequences in the 25 - 100 character lengths well, but anything past that will have bad quality. In this example, you may experience a speed up in speech rate as the model try to squish 150 characters in 3 seconds.
 
@@ -255,7 +255,10 @@ Below is an example of a bad distribution for the number of samples. This distri
 ### Phonemes Distribution
 ![phonemedist](example_visuals/phonemedist.png)
 
-This only output if you use the `--cmu_dict_path` parameter. The X-axis is the unique phonemes, and the Y-axis shows how many times that phoneme shows up in your dataset. We are still experimenting with how the distribution should look, but the theory is having a balanced distribution of phonemes will increase quality in pronunciation.
+This only outputs if you use the `--cmu_dict_path` parameter. The X-axis is the unique phonemes, and the Y-axis shows how many times that phoneme shows up in your dataset. We are still experimenting with how the distribution should look, but the theory is having a balanced distribution of phonemes will increase quality in pronunciation.
 
 ### Tips
-If your data looks bad, you can try resampling methods to change the shape of your data. For example, to fix the bad number of samples chart. You can try to delete samples and copy samples to make the chart look more normally distributed. For standard deviation, you can remove data that causes your standard deviation of have a large spread. 
+If your data looks bad you can try resampling methods to change the shape of your data.
+* For number of samples, you can try to delete samples and copy samples to make the chart look more normally distributed. 
+* For standard deviation, you can remove data that causes your standard deviation of have a large spread.
+* For the average seconds, you can try to only include samples that follows a linear pattern

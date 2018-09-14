@@ -14,6 +14,9 @@ attempt to provide an open-source implementation of the model described in their
 The quality isn't as good as Google's demo yet, but hopefully, it will get there someday :-).
 Pull requests are welcome!
 
+## Samples
+[Here](http://htmlpreview.github.io/?https://github.com/MycroftAI/mimic2/blob/master/samples/index.html) you can find samples on a model trained using this repo. The data had 16 hours of training data recorded by a single english speaker.
+
 
 ## Contributions
 Contributions are accepted! We'd love the communities help in building a better speech synthesis engine; weather it be code, or, update on the README, bug reports, etc. For real time conversations, join our [mattermost](https://chat.mycroft.ai/community/channels/machine-learning) chat and enter the machinelearning channel.

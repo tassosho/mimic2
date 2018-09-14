@@ -241,3 +241,6 @@ Below is an example of a lousy distribution for the number of samples. This dist
 ![phonemedist](example_visuals/phonemedist.png)
 
 This only output if you use the `--cmu_dict_path` parameter. The X-axis is the unique phonemes, and the Y-axis shows how many times that phoneme shows up in your dataset. We are still experimenting with how the distribution should look, but the theory is having a balanced distribution of phonemes will increase quality in pronunciation.
+
+### Tips
+If your data looks bad, you can try resampling methods to change the shape of your data. For example, to fix the bad number of samples chart. You can try to delete samples and copy samples to make the chart look more normally distributed. For standard deviation, you can remove data that causes your standard deviation of have a large spread. 

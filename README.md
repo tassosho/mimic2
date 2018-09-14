@@ -178,7 +178,7 @@ Pull requests are welcome!
   * By Kyubyong Park: https://github.com/Kyubyong/tacotron
 
 ## Visualizing Your Data
-[analyze](./analyze/__main__.py) is a tool to visualize your dataset after preprocessing. This step is important to ensure quality in the voice generation.
+[analyze](./analyze/__main__.py) is a tool to visualize your dataset after preprocessing. This step is important to ensure quality in the voice generation. The analyze tool takes in train.txt as the data input to do visualizations. train.txt is a file created from preprocess.py.
 
 Example
 ```

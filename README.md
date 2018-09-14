@@ -93,6 +93,13 @@ Pull requests are welcome!
    ```
      * other datasets can be used i.e. `--dataset blizzard` for Blizzard data
      * for the mailabs dataset, do `preprocess.py --help` for options. Also note that mailabs uses sample_size of 16000
+     * you may want to create your own preprocessing script that works for your dataset. You can follow examples from preprocess.py and ./datasets
+
+
+    preprocess.py creates a train.txt and metadata.txt. train.txt is the file you use to pass to train.py input parameter. metadata.txt can be used as a reference to get max input lengh, max output lengh, and how many hours is your dataset.
+  
+    **NOTE**
+    modify hparams.py to cater to your dataset.
 
 4. **Train a model**
    ```
@@ -101,9 +108,9 @@ Pull requests are welcome!
 
    Tunable hyperparameters are found in [hparams.py](hparams.py). You can adjust these at the command
    line using the `--hparams` flag, for example `--hparams="batch_size=16,outputs_per_step=2"`.
-   Hyperparameters should generally be set to the same values at both training and eval time. I highly recommend
-   setting the params in the hparams.py file to gurantee consistentcy during preprocessing, training, evaluating,
-   and running the demo server.
+   Hyperparameters should generally be set to the same values at both training and eval time. **I highly recommend
+   setting the params in the hparams.py file to guarantee consistency during preprocessing, training, evaluating,
+   and running the demo server. The --hparams flag will be deprecated soon**
 
 
 5. **Monitor with Tensorboard** (optional)
@@ -126,3 +133,112 @@ Pull requests are welcome!
    ```
    If you set the `--hparams` flag when training, set the same value here.
 
+7. **Analyzing Data**
+   
+   You can visualize your data set after preprocessing the data. See more details info [here](#visualizing-your-data)
+   
+
+## Notes and Common Issues
+
+  * [TCMalloc](http://goog-perftools.sourceforge.net/doc/tcmalloc.html) seems to improve
+    training speed and avoids occasional slowdowns seen with the default allocator. You
+    can enable it by installing it and setting `LD_PRELOAD=/usr/lib/libtcmalloc.so`. With TCMalloc,
+    you can get around 1.1 sec/step on a GTX 1080Ti.
+
+  * You can train with [CMUDict](http://www.speech.cs.cmu.edu/cgi-bin/cmudict) by downloading the
+    dictionary to ~/tacotron/training and then passing the flag `--hparams="use_cmudict=True"` to
+    train.py. This will allow you to pass ARPAbet phonemes enclosed in curly braces at eval
+    time to force a particular pronunciation, e.g. `Turn left on {HH AW1 S S T AH0 N} Street.`
+
+  * If you pass a Slack incoming webhook URL as the `--slack_url` flag to train.py, it will send
+    you progress updates every 1000 steps.
+
+  * Occasionally, you may see a spike in loss and the model will forget how to attend (the
+    alignments will no longer make sense). Although it will recover eventually, it may
+    save time to restart at a checkpoint prior to the spike by passing the
+    `--restore_step=150000` flag to train.py (replacing 150000 with a step number prior to the
+    spike). **Update**: a recent [fix](https://github.com/keithito/tacotron/pull/7) to gradient
+    clipping by @candlewill may have fixed this.
+    
+  * During eval and training, audio length is limited to `max_iters * outputs_per_step * frame_shift_ms`
+    milliseconds. With the defaults (max_iters=200, outputs_per_step=5, frame_shift_ms=12.5), this is
+    12.5 seconds.
+    
+    If your training examples are longer, you will see an error like this:
+    `Incompatible shapes: [32,1340,80] vs. [32,1000,80]`
+    
+    To fix this, you can set a larger value of `max_iters` by passing `--hparams="max_iters=300"` to
+    train.py (replace "300" with a value based on how long your audio is and the formula above).
+    
+  * Here is the expected loss curve when training on LJ Speech with the default hyperparameters:
+    ![Loss curve](https://user-images.githubusercontent.com/1945356/36077599-c0513e4a-0f21-11e8-8525-07347847720c.png)
+
+## Other Implementations
+  * By Alex Barron: https://github.com/barronalex/Tacotron
+  * By Kyubyong Park: https://github.com/Kyubyong/tacotron
+
+## Visualizing Your Data
+[analyze](./analyze/__main__.py) is a tool to visualize your dataset after preprocessing. This step is important to ensure quality in the voice generation.
+
+Example
+```
+    python analyze.py --train_file_path=~/tacotron/training/train.txt --save_to=~tacotron/visuals --cmu_dict_path=~/cmudict-0.7b
+```
+
+cmu_dict_path is optional if you'd like to visualize the distribution of the phonenemes.
+
+Analyze outputs 6 different plots.
+
+### Average Seconds vs Character Lengths
+![avgsecvslen](analyze/example_visuals/avgsecvscharlen.png)
+
+This tells you what your audio data looks like in the time perspective. This plot shows the average seconds of your audio sample per character length of the sample.
+
+E.g So for all 50 character samples the average audio length is 3 seconds. Your data should show a linear pattern like the example above. 
+
+Having a linear pattern for time vs character lengths is important to ensure a consistent speech rate during audio generation.
+
+Below is a bad example of average seconds vs character lengths in your dataset. You can see taht there is inconsistency towards the higher character lengths range. at 180, the average audio length was 8 seconds while at 185 the averate was 6.
+
+![badavgsec](example_visuals/bad_avgsec.png)
+
+### Median Seconds vs Character Lengths
+![medsecvslen](example_visuals/medesecvscharlen.png)
+
+Another perspective for time, that plots the median.
+
+### Mode Seconds vs Character Lengths
+![modesecvslen](example_visuals/modsecvscharlen.png)
+
+Another perspective for time, that plots the mode.
+
+### Standard Deviation vs Character Lengths
+![stdvslen](example_visuals/stdvscharlen.png)
+
+Plots the standard deviation or spread of your dataset. The standard deviation should stay in a range no bigger then 0.8.
+
+E.g For samples with 100 character lengths, the average audio length is 6 seconds. According to the chart above, 100 character lenghs has an std of about 0.6. That means most samples in the 100 character length range should be no more then 6.6 seconds and no less then 5.2 seconds.
+
+Having a low standard deviation is important to ensure a consistent speech rate during audio generation.
+
+Below is an example of a bad distribution of standard deviations.
+
+![badstd](example_visuals/bad_std.png)
+
+### Number of Samples vs Character Lengths
+![numvslen](example_visuals/numsamplesvscharlen.png)
+
+Plots the number of samples you have in the character lengths range.
+
+E.g. For samples in the 100 character lengths range, there are about 125 samples of it.
+
+It's important to keep this plot as normally distributed as possible so that the model has enough data to produce a natural speech rate. If this char is off balance, you may get weird speech rate during voice generation.
+
+Below is an example of a bad distribution for number of samples. This distribution will generate sequences in the 25 - 100 character lengths really well, but anything pass that will have bad quality. In this example you may experience a speech up in speech rate as the model try to squish 150 characters in 3 seconds.
+
+![badnumsamp](example_visuals/bad_num_samples.png)
+
+### Phonemes Distribution
+![phonemedist](example_visuals/phonemedist.png)
+
+This only output if you use the `--cmu_dict_path` parameter. The X axis are the unique phonemes and the Y axis shows how many times that phoneme shows up in your dataset. We are still experimenting with how the distribution should look, but the theory is having a balanced distribution of phonemes will increase quality in pronounciation.

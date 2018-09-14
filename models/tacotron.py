@@ -49,12 +49,11 @@ class Tacotron():
 
       # Attention
       attention_cell = AttentionWrapper(
-        GRUCell(256),
+        DecoderPrenetWrapper(GRUCell(256), is_training),
         LocationSensitiveAttention(256, encoder_outputs),
         alignment_history=True,
         output_attention=False)                                                  # [N, T_in, 256]
 
-      attention_cell = DecoderPrenetWrapper(attention_cell, is_training)
 
       # Concatenate attention context vector and RNN cell output into a 512D vector.
       concat_cell = ConcatOutputAndAttentionWrapper(attention_cell)              # [N, T_in, 512]

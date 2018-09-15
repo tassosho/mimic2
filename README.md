@@ -246,7 +246,7 @@ Plots the number of samples you have in character lengths range.
 
 E.g. For samples in the 100 character lengths range, there are about 125 samples of it.
 
-It's important to keep this plot as normally distributed as possible so that the model has enough data to produce a natural speech rate. If the chart look's off balance, you may get weird speech rate during voice generation.
+It's important for this plot to have a smooth distribution. Normal distribution is what we went with for our data set but a uniform distribution may also be of value. If the chart look's off balance, you may get weird speech rate during voice generation.
 
 Below is an example of a bad distribution for the number of samples. This distribution will generate sequences in the 25 - 100 character lengths well, but anything past that will have bad quality. In this example, you may experience a speed up in speech rate as the model try to squish 150 characters in 3 seconds.
 

@@ -15,7 +15,7 @@ The quality isn't as good as Google's demo yet, but hopefully, it will get there
 Pull requests are welcome!
 
 ## Samples
-[Here](http://htmlpreview.github.io/?https://github.com/MycroftAI/mimic2/blob/master/samples/index.html) you can find samples on a model trained using this repo. The data had 16 hours of training data recorded by a single english speaker. Sample were generated using non training data.
+[Here](https://cdn.rawgit.com/MycroftAI/mimic2/master/samples/index.html) you can find audio samples on a model trained using this repo. The data had 16 hours of training data recorded by a single english speaker. Sample were generated using non training data.
 
 
 ## Contributions

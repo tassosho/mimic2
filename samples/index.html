@@ -1,65 +1,37 @@
-<!doctype html>
-<html lang="en">
+<html>
+<title>Samples of Mimic2</title>
+<style>
+        body {
+                padding: 16px;
+                font-family: sans-serif;
+                font-size: 14px;
+                color: #444
+        }
 
-<head>
-    <meta charset="UTF-8">
-    <title>audio test</title>
-</head>
+        p {
+                padding: 12px
+        }
+</style>
 
 <body>
-    <!--   <audio controls="controls" autoplay>
-  Your browser does not support the <code>audio</code> element.
-  <source src="smb_gameover.wav" type="audio/wav">
-</audio>
- -->
- <p>This voice was generated using 16 hours of data recorded from our colleague <a href="https://www.linkedin.com/in/kusalwin/">Kusal</a></p>. Samples were generated using non training data.
-    <div>
-        <h4>"There a way to measure the acute emotional intelligence that has never gone out of style." <button class="playWAV1">PLAY</button>
-        </h4>
-    </div>
-    <div>
-        <h4>"It took me quite a long time to develop a voice, and now that I have it I'm not going to be silent." <button class="playWAV2">PLAY</button>
-        </h4>
-    </div>
-    <div>
-        <h4>"The human voice is the most perfect instrument of all." <button class="playWAV3">PLAY</button>
-        </h4>
-    </div>
-    <div>
-        <h4>"I'm sorry Dave, I'm afraid I can't do that." <button class="playWAV4">PLAY</button>
-        </h4>
-    </div>
-    <div>Voice generated from the Mycroft AI team</div>
-
-    <script>
-        /**********************
-        ******** AUDIO ********
-        **********************/
-        // load and play a sound.
-        function playSound(path) {
-            // audio supported?
-            if (typeof window.Audio === 'function') {
-                var audioElem = new Audio();
-                audioElem.src = path;
-                audioElem.play();
-            }
-        }
-        // event listeners
-        document.querySelector('.playWAV1').addEventListener('click', function () {
-            playSound('1.wav');
-        });
-        document.querySelector('.playWAV2').addEventListener('click', function () {
-            playSound('2.wav');
-        });
-        document.querySelector('.playWAV3').addEventListener('click', function () {
-            playSound('3.wav');
-        });
-        document.querySelector('.playWAV4').addEventListener('click', function () {
-            playSound('4.wav');
-        });
-
-    </script>
-
+        <h3>Samples from Mimic2 based on google's <a href="https://arxiv.org/abs/1703.10135">tacotron</a>.</h3>
+        <p>This model was trained on 16 hours of an english male speaker. These samples were non training samples.</p>
+        <div>
+                <p>"There's a way to measure the acute emotional intelligene that has never gone out of style."</p>
+                <audio src="./1.wav" controls></audio>
+        </div>
+        <div>
+                <p>"It took me quite a long time to develop a voice, and now that I have it I'm not going to remain silent."</p>
+                <audio src="./2.wav" controls></audio>
+        </div>
+        <div>
+                <p>"The human voice is the most perfect instrument of all."</p>
+                <audio src="./3.wav" controls></audio>
+        </div>
+        <div>
+                <p>"I'm sorry Dave, I'm afraid I can't do that."</p>
+                <audio src="./4.wav" controls></audio>
+        </div>
 </body>
 
 </html>

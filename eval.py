@@ -50,7 +50,7 @@ def run_eval(args):
     print('Synthesizing and plotting: %s' % wav_path)
     wav, alignment = synth.synthesize(text)
     with open(wav_path, 'wb') as f:
-      f.write(wav.getvalue())
+      f.write(wav)
     plot.plot_alignment(
         alignment, align_path,
         info='%s' % (text)

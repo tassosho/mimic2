@@ -81,7 +81,8 @@ class Mimic2(MethodView):
               return send_file(audio, mimetype="audio/wav")
             else:
               wav, _ = synthesizer.synthesize(text)
-              return send_file(wav, mimetype="audio/wav")
+              audio = io.BytesIO(wav)
+              return send_file(audio, mimetype="audio/wav")
 
 
 class UI(MethodView):
@@ -101,6 +102,7 @@ if __name__ == '__main__':
     parser.add_argument('--checkpoint', required=True,
                         help='Full path to model checkpoint')
     parser.add_argument('--port', type=int, default=3000)
+    parser.add_argument('--ip', type=str, default='0.0.0.0')
     parser.add_argument('--hparams', default='',
                         help='Hyperparameter overrides as a comma-separated list of name=value pairs')
     parser.add_argument(
@@ -119,4 +121,4 @@ if __name__ == '__main__':
     hparams.parse(args.hparams)
     print(hparams_debug_string())
     synthesizer.load(args.checkpoint)
-    app.run(host='0.0.0.0', port=args.port)
+    app.run(host=args.ip, port=args.port)

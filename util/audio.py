@@ -51,12 +51,14 @@ def melspectrogram(y):
 
 def find_endpoint(wav, threshold_db=-40, min_silence_sec=0.8):
   window_length = int(hparams.sample_rate * min_silence_sec)
-  hop_length = int(window_length / 4)
+  hop_length = window_length // 4
   threshold = _db_to_amp(threshold_db)
-  for x in range(hop_length, len(wav) - window_length, hop_length):
-    if np.max(wav[x:x + window_length]) < threshold:
-      return x + hop_length
-  return len(wav)
+  return next(
+      (x + hop_length for x in range(hop_length,
+                                     len(wav) - window_length, hop_length)
+       if np.max(wav[x:x + window_length]) < threshold),
+      len(wav),
+  )
 
 
 def _griffin_lim(S):
@@ -66,7 +68,7 @@ def _griffin_lim(S):
   angles = np.exp(2j * np.pi * np.random.rand(*S.shape))
   S_complex = np.abs(S).astype(np.complex)
   y = _istft(S_complex * angles)
-  for i in range(hparams.griffin_lim_iters):
+  for _ in range(hparams.griffin_lim_iters):
     angles = np.exp(1j * np.angle(_stft(y)))
     y = _istft(S_complex * angles)
   return y
@@ -81,7 +83,7 @@ def _griffin_lim_tensorflow(S):
     S = tf.expand_dims(S, 0)
     S_complex = tf.identity(tf.cast(S, dtype=tf.complex64))
     y = _istft_tensorflow(S_complex)
-    for i in range(hparams.griffin_lim_iters):
+    for _ in range(hparams.griffin_lim_iters):
       est = _stft_tensorflow(y)
       angles = est / tf.cast(tf.maximum(1e-8, tf.abs(est)), tf.complex64)
       y = _istft_tensorflow(S_complex * angles)

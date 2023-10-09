@@ -76,19 +76,19 @@ def _expand_dollars(m):
   match = m.group(1)
   parts = match.split('.')
   if len(parts) > 2:
-    return match + ' dollars'  # Unexpected format
+    return f'{match} dollars'
   dollars = int(parts[0]) if parts[0] else 0
   cents = int(parts[1]) if len(parts) > 1 and parts[1] else 0
   if dollars and cents:
     dollar_unit = 'dollar' if dollars == 1 else 'dollars'
     cent_unit = 'cent' if cents == 1 else 'cents'
-    return '%s %s, %s %s' % (dollars, dollar_unit, cents, cent_unit)
+    return f'{dollars} {dollar_unit}, {cents} {cent_unit}'
   elif dollars:
     dollar_unit = 'dollar' if dollars == 1 else 'dollars'
-    return '%s %s' % (dollars, dollar_unit)
+    return f'{dollars} {dollar_unit}'
   elif cents:
     cent_unit = 'cent' if cents == 1 else 'cents'
-    return '%s %s' % (cents, cent_unit)
+    return f'{cents} {cent_unit}'
   else:
     return 'zero dollars'
 
@@ -101,10 +101,9 @@ def _standard_number_to_words(n, digit_group):
     n = n % 1000
 
   if n >= 100:
-    parts.append('%s hundred' % _units[n // 100])
+    parts.append(f'{_units[n // 100]} hundred')
   if n % 100 >= len(_units):
-    parts.append(_tens[(n % 100) // 10])
-    parts.append(_units[(n % 100) % 10])
+    parts.extend((_tens[(n % 100) // 10], _units[(n % 100) % 10]))
   else:
     parts.append(_units[n % 100])
   if n > 0:
@@ -119,7 +118,7 @@ def _number_to_words(n):
   elif n == 0:
     return 'zero'
   elif n % 100 == 0 and n % 1000 != 0 and n < 3000:
-    return _standard_number_to_words(n // 100, 0) + ' hundred'
+    return f'{_standard_number_to_words(n // 100, 0)} hundred'
   else:
     return _standard_number_to_words(n, 0)
 
@@ -133,7 +132,7 @@ def _expand_ordinal(m):
   for suffix, replacement in _ordinal_suffixes:
     if num.endswith(suffix):
       return num[:-len(suffix)] + replacement
-  return num + 'th'
+  return f'{num}th'
 
 
 def normalize_numbers(text):

@@ -35,7 +35,7 @@ def build_from_path(in_dir, out_dir, books, num_workers=1, tqdm=lambda x: x):
       for line in f:
         parts = line.strip().split('|')
         name = parts[0]
-        wav_path = os.path.join(book_dir, 'wavs', '%s.wav' % name)
+        wav_path = os.path.join(book_dir, 'wavs', f'{name}.wav')
         # normalized version of text i.e numbers convered to words
         text = parts[2]
         futures.append(
@@ -75,8 +75,8 @@ def _process_utterance(out_dir, name, wav_path, text):
   mel_spectrogram = audio.melspectrogram(wav).astype(np.float32)
 
   # Write the spectrograms to disk:
-  spectrogram_filename = 'mailabs-spec-{}.npy'.format(name)
-  mel_filename = 'mailabs-mel-{}.npy'.format(name)
+  spectrogram_filename = f'mailabs-spec-{name}.npy'
+  mel_filename = f'mailabs-mel-{name}.npy'
   np.save(os.path.join(out_dir, spectrogram_filename),
           spectrogram.T, allow_pickle=False)
   np.save(os.path.join(out_dir, mel_filename),

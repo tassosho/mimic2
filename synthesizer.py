@@ -15,7 +15,7 @@ def find_alignment_endpoint(alignment_shape, ratio):
 
 class Synthesizer:
   def load(self, checkpoint_path, model_name='tacotron'):
-    print('Constructing model: %s' % model_name)
+    print(f'Constructing model: {model_name}')
     inputs = tf.placeholder(tf.int32, [1, None], 'inputs')
     input_lengths = tf.placeholder(tf.int32, [1], 'input_lengths')
     with tf.variable_scope('model') as scope:
@@ -25,7 +25,7 @@ class Synthesizer:
           self.model.linear_outputs[0])
       self.alignment = self.model.alignments[0]
 
-    print('Loading checkpoint: %s' % checkpoint_path)
+    print(f'Loading checkpoint: {checkpoint_path}')
     self.session = tf.Session()
     self.session.run(tf.global_variables_initializer())
     saver = tf.train.Saver()

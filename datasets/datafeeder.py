@@ -55,8 +55,9 @@ class DataFeeder(threading.Thread):
     if hparams.use_cmudict:
       cmudict_path = os.path.join(self._datadir, 'cmudict-0.7b')
       if not os.path.isfile(cmudict_path):
-        raise Exception('If use_cmudict=True, you must download ' +
-          'http://svn.code.sf.net/p/cmusphinx/code/trunk/cmudict/cmudict-0.7b to %s'  % cmudict_path)
+        raise Exception(
+            f'If use_cmudict=True, you must download http://svn.code.sf.net/p/cmusphinx/code/trunk/cmudict/cmudict-0.7b to {cmudict_path}'
+        )
       self._cmudict = cmudict.CMUDict(cmudict_path, keep_ambiguous=False)
       log('Loaded CMUDict with %d unambiguous entries' % len(self._cmudict))
     else:
@@ -83,7 +84,7 @@ class DataFeeder(threading.Thread):
     # Read a group of examples:
     n = self._hparams.batch_size
     r = self._hparams.outputs_per_step
-    examples = [self._get_next_example() for i in range(n * _batches_per_group)]
+    examples = [self._get_next_example() for _ in range(n * _batches_per_group)]
 
     # Bucket examples based on similar output sequence length for efficiency:
     examples.sort(key=lambda x: x[-1])

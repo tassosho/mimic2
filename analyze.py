@@ -63,17 +63,14 @@ def process_meta_data(path):
                     "utt": utt,
                     "frames": frames,
                     "audio_len": audio_len,
-                    "row": "{}|{}|{}|{}".format(row[0], row[1], row[2], row[3])
+                    "row": f"{row[0]}|{row[1]}|{row[2]}|{utt}",
                 }
             )
-
-    meta_data = append_data_statistics(meta_data)
-
-    return meta_data
+    return append_data_statistics(meta_data)
 
 
 def get_data_points(meta_data):
-    x = [char_cnt for char_cnt in meta_data]
+    x = list(meta_data)
     y_avg = [meta_data[d]['mean'] for d in meta_data]
     y_mode = [meta_data[d]['mode'] for d in meta_data]
     y_median = [meta_data[d]['median'] for d in meta_data]
@@ -93,9 +90,7 @@ def save_training(file_path, meta_data):
     rows = []
     for char_cnt in meta_data:
         data = meta_data[char_cnt]['data']
-        for d in data:
-            rows.append(d['row'] + "\n")
-
+        rows.extend(d['row'] + "\n" for d in data)
     random.shuffle(rows)
     with open(file_path, 'w+') as f:
         for row in rows:
@@ -103,10 +98,7 @@ def save_training(file_path, meta_data):
 
 
 def plot(meta_data, save_path=None):
-    save = False
-    if save_path:
-        save = True
-
+    save = bool(save_path)
     graph_data = get_data_points(meta_data)
     x = graph_data['x']
     y_avg = graph_data['y_avg']
@@ -114,7 +106,7 @@ def plot(meta_data, save_path=None):
     y_mode = graph_data['y_mode']
     y_median = graph_data['y_median']
     y_num_samples = graph_data['y_num_samples']
-   
+
     plt.figure()
     plt.plot(x, y_avg, 'ro')
     plt.xlabel("character lengths", fontsize=30)
@@ -122,7 +114,7 @@ def plot(meta_data, save_path=None):
     if save:
         name = "char_len_vs_avg_secs"
         plt.savefig(os.path.join(save_path, name))
-    
+
     plt.figure()
     plt.plot(x, y_mode, 'ro')
     plt.xlabel("character lengths", fontsize=30)
@@ -167,8 +159,7 @@ def plot_phonemes(train_path, cmu_dict_path, save_path):
         for row in data:
             words = row[3].split()
             for word in words:
-                pho = cmudict.lookup(word)
-                if pho:
+                if pho := cmudict.lookup(word):
                     indie = pho[0].split()
                     for nemes in indie:
                         if phonemes.get(nemes):
@@ -182,7 +173,7 @@ def plot_phonemes(train_path, cmu_dict_path, save_path):
     for key in phonemes:
         x.append(key)
         y.append(phonemes[key])
-    
+
     plt.figure()
     plt.rcParams["figure.figsize"] = (50, 20)
     plot = sns.barplot(x, y)

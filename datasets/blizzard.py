@@ -27,8 +27,8 @@ def build_from_path(in_dir, out_dir, num_workers=1, tqdm=lambda x: x):
       for line in f:
         parts = line.strip().split('\t')
         if line[0] is not '#' and len(parts) == 8 and float(parts[3]) > _min_confidence:
-          wav_path = os.path.join(in_dir, book, 'wav', '%s.wav' % parts[0])
-          labels_path = os.path.join(in_dir, book, 'lab', '%s.lab' % parts[0])
+          wav_path = os.path.join(in_dir, book, 'wav', f'{parts[0]}.wav')
+          labels_path = os.path.join(in_dir, book, 'lab', f'{parts[0]}.lab')
           text = parts[5]
           task = partial(_process_utterance, out_dir, index, wav_path, labels_path, text)
           futures.append(executor.submit(task))
@@ -64,10 +64,6 @@ def _parse_labels(path):
       parts = line.strip().split(' ')
       if len(parts) >= 3:
         labels.append((float(parts[0]), ' '.join(parts[2:])))
-  start = 0
-  end = None
-  if labels[0][1] == 'sil':
-    start = labels[0][0]
-  if labels[-1][1] == 'sil':
-    end = labels[-2][0] + _end_buffer
+  start = labels[0][0] if labels[0][1] == 'sil' else 0
+  end = labels[-2][0] + _end_buffer if labels[-1][1] == 'sil' else None
   return (start, end)

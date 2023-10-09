@@ -29,13 +29,13 @@ def test_cmudict():
     'AE1 D V ER2 S',
     'AE2 D V ER1 S',
   ]
-  assert c.lookup('') == None
-  assert c.lookup('foo') == None
-  assert c.lookup(')paren') == None
+  assert c.lookup('') is None
+  assert c.lookup('foo') is None
+  assert c.lookup(')paren') is None
 
 
 def test_cmudict_no_keep_ambiguous():
   c = cmudict.CMUDict(io.StringIO(test_data), keep_ambiguous=False)
   assert len(c) == 5
   assert c.lookup('adversity') == ['AE0 D V ER1 S IH0 T IY2']
-  assert c.lookup('adverse') == None
+  assert c.lookup('adverse') is None

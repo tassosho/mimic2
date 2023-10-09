@@ -47,14 +47,11 @@ def run_eval(args):
   for i, text in enumerate(sentences):
     wav_path = '%s-%d.wav' % (base_path, i)
     align_path = '%s-%d.png' % (base_path, i)
-    print('Synthesizing and plotting: %s' % wav_path)
+    print(f'Synthesizing and plotting: {wav_path}')
     wav, alignment = synth.synthesize(text)
     with open(wav_path, 'wb') as f:
       f.write(wav)
-    plot.plot_alignment(
-        alignment, align_path,
-        info='%s' % (text)
-    )
+    plot.plot_alignment(alignment, align_path, info=f'{text}')
 
 
 def main():

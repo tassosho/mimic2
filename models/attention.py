@@ -46,7 +46,7 @@ class LocationSensitiveAttention(BahdanauAttention):
       score = _location_sensitive_score(processed_query, processed_location, self.keys)
     alignments = self._probability_fn(score, state)
     next_state = alignments
-    return alignments, next_state
+    return next_state, next_state
 
 
 def _location_sensitive_score(processed_query, processed_location, keys):

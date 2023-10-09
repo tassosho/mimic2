@@ -72,17 +72,15 @@ synthesizer = Synthesizer()
 class Mimic2(MethodView):
     def get(self):
         text = request.args.get('text')
-        text =  " ".join(replace_acronym(custom_splitter(text)))
-        if text:
+        if text := " ".join(replace_acronym(custom_splitter(text))):
             if use_synthesize_helper:
-              wav = synthesize_helper(text, synthesizer)
-              # wav, _ = synthesizer.synthesize(text)
-              audio = io.BytesIO(wav)
-              return send_file(audio, mimetype="audio/wav")
+                wav = synthesize_helper(text, synthesizer)
             else:
-              wav, _ = synthesizer.synthesize(text)
-              audio = io.BytesIO(wav)
-              return send_file(audio, mimetype="audio/wav")
+                wav, _ = synthesizer.synthesize(text)
+
+            # wav, _ = synthesizer.synthesize(text)
+            audio = io.BytesIO(wav)
+            return send_file(audio, mimetype="audio/wav")
 
 
 class UI(MethodView):

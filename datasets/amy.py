@@ -48,8 +48,8 @@ def _process_utterance(out_dir, prompt_id, wav_path, text):
   mel_spectrogram = audio.melspectrogram(wav).astype(np.float32)
 
   # Write the spectrograms to disk:
-  spectrogram_filename = 'amy-spec-%s.npy' % prompt_id
-  mel_filename = 'amy-mel-%s.npy' % prompt_id
+  spectrogram_filename = f'amy-spec-{prompt_id}.npy'
+  mel_filename = f'amy-mel-{prompt_id}.npy'
   np.save(os.path.join(out_dir, spectrogram_filename), spectrogram.T, allow_pickle=False)
   np.save(os.path.join(out_dir, mel_filename), mel_spectrogram.T, allow_pickle=False)
 
